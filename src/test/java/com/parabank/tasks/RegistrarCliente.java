@@ -3,10 +3,10 @@ package com.parabank.tasks;
 import com.github.javafaker.Faker;
 import com.parabank.pages.HomePage;
 import com.parabank.pages.RegisterFormPage;
+import net.serenitybdd.core.Serenity;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Performable;
 import net.serenitybdd.screenplay.Task;
-import net.serenitybdd.screenplay.actions.Clear;
 import net.serenitybdd.screenplay.actions.Click;
 import net.serenitybdd.screenplay.actions.Enter;
 import net.serenitybdd.screenplay.waits.WaitUntil;
@@ -37,8 +37,11 @@ public class RegistrarCliente implements Task {
         String zipCode = faker.address().zipCode();
         String phoneNumber = faker.phoneNumber().phoneNumber();
         String SSN = faker.number().numberBetween(100,999)+"-"+faker.number().numberBetween(10,99)+"-"+faker.number().numberBetween(1000,9999);
-        String username = faker.name().username();
-        String password = faker.internet().password();
+        String username = faker.lorem().word().toLowerCase()+faker.number().numberBetween(1000,9999);
+        String password = faker.lorem().word().toLowerCase()+faker.number().numberBetween(1000,9999);
+
+        Serenity.setSessionVariable("username").to(username);
+        Serenity.setSessionVariable("password").to(password);
 
         actor.attemptsTo(
                 Click.on(HomePage.LBL_REGISTER),

@@ -1,16 +1,17 @@
 package com.parabank.stepsdefinitions;
 
 import com.github.javafaker.Faker;
+import com.parabank.pages.HomePage;
 import com.parabank.pages.RegisterSuccessPage;
+import com.parabank.questions.LoginQuestions;
 import com.parabank.questions.RegisterQuestions;
 import com.parabank.tasks.IngresaWeb;
+import com.parabank.tasks.Login;
 import com.parabank.tasks.RegistrarCliente;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import net.serenitybdd.core.Serenity;
-import net.serenitybdd.screenplay.actions.Click;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
 import net.serenitybdd.screenplay.waits.WaitUntil;
@@ -20,7 +21,6 @@ import java.util.Locale;
 import static net.serenitybdd.screenplay.actors.OnStage.theActorInTheSpotlight;
 import static net.serenitybdd.screenplay.GivenWhenThen.seeThat;
 import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isPresent;
-import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isVisible;
 import static org.hamcrest.Matchers.*;
 
 public class RegistroClienteStepsDef {
@@ -49,7 +49,24 @@ public class RegistroClienteStepsDef {
                 WaitUntil.the(RegisterSuccessPage.LBL_REGISTER_SUCCESS, isPresent()).forNoMoreThan(10).seconds()
         );
         theActorInTheSpotlight().should(
-                seeThat("Se muestra mensaje de registro exitoso", RegisterQuestions.mensajeExitoso(), containsString("Your account was created successfully. You are now logged in."))
+                seeThat("Se muestra mensaje de registro exitoso", RegisterQuestions.mensajeRegistroExitoso(), containsString("Your account was created successfully. You are now logged in."))
+        );
+    }
+
+    @When("usuario se loguea a la web")
+    public void usuarioLogueaWeb() {
+        theActorInTheSpotlight().attemptsTo(
+                Login.conDatos()
+        );
+    }
+
+    @Then("visualiza pantalla de login exitoso")
+    public void visualizaLoginExitoso() {
+        theActorInTheSpotlight().attemptsTo(
+                WaitUntil.the(HomePage.LBL_LOGINSUCCESS, isPresent()).forNoMoreThan(10).seconds()
+        );
+        theActorInTheSpotlight().should(
+                seeThat("Se muestra mensaje de Login exitoso", LoginQuestions.mensajeLoginExitoso(), containsString("Accounts Overview"))
         );
     }
 
