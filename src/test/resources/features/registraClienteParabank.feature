@@ -1,10 +1,8 @@
 Feature: Registro de cliente en web Parabank
 
   @registrarClienteParabank
-  Scenario Outline: Registrar cliente en web Parabank
-    Given usuario "<usuario>" navega a sitio "parabank.web"
-
-    Examples: Alta Pepper Online
-      | usuario |
-      | Erick|
+  Scenario: Registrar cliente en web Parabank
+    Given usuario navega a sitio "parabank.web"
+    When usuario se registra en la web con datos aleatorios
+    Then valida mensaje de registro exitoso
 
